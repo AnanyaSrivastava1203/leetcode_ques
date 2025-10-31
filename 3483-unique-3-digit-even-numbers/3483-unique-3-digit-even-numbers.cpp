@@ -1,0 +1,41 @@
+class Solution {
+public:
+    int totalNumbers(vector<int>& digits) {
+        int freq[10]={0};
+        for(int d:digits){
+            freq[d]++;
+        }
+        int zero=0;//count the no. of zeros in the digits array
+        int even=0;//number of distinct even numbers
+        int all=0;//number of all the distinct digits
+        for(int i=0;i<10;i++){
+            if(freq[i]>0){
+                if(i==0) zero++;
+                if(i%2==0) even++;
+                all++;
+            }
+        }
+        //for unique digits
+        int count=even*(all-1)*(all-2);
+        if(zero==1) count-=(even-1)*(all-2);
+
+        //for 2 same digits and 1 different
+        for(int i=0;i<10;i++){
+            if(freq[i]>=2){
+                if(i==0) count+=all-1;
+                else if(i%2==1) count+=even;
+                else{
+                    count+=3*(even-1)-zero;//if the differnt digit is also even
+                    count+=2*(all-even);
+                }
+            }
+        }
+        //for all the 3 digits same
+        for(int i=2;i<10;i+=2){
+            if(freq[i]>=3){
+                count++;
+            }
+        }
+        return count;
+    }
+};
